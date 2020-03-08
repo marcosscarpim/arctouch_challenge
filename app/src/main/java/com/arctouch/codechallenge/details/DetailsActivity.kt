@@ -21,7 +21,6 @@ class DetailsActivity : BaseActivity() {
     private lateinit var viewModel: DetailsViewModel
 
     private val detailsObserver: Observer<DetailsEntry> = Observer {
-        Log.d("Marcos", "detailsObserver = $it")
         updateUI(it)
     }
 
@@ -30,7 +29,7 @@ class DetailsActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.details_activity)
 
         val movieId = intent.getIntExtra(MOVIE_ID_EXTRA_NAME, 0)
-        val viewModel = DetailsViewModel(api, movieId.toLong(), DetailsEntryMapper())
+        viewModel = DetailsViewModel(api, movieId.toLong(), DetailsEntryMapper())
 
         viewModel.getDetails().observe(this, detailsObserver)
     }

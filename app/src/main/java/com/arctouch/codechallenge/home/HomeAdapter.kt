@@ -12,9 +12,10 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class HomeAdapter(
-        private val movies: List<Movie>,
         val onItemClicked: (id: Int) -> Unit
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+
+    val movies = mutableListOf<Movie>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -30,6 +31,12 @@ class HomeAdapter(
                 .apply(RequestOptions().placeholder(R.drawable.ic_image_placeholder))
                 .into(itemView.posterImageView)
         }
+    }
+
+    fun addMovieList(movieList: List<Movie>) {
+        val currentSize = movies.size
+        movies.addAll(movieList)
+        notifyItemRangeInserted(currentSize, movieList.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

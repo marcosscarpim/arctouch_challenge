@@ -23,7 +23,7 @@ interface TmdbApi {
         @Query("language") language: String
     ): Observable<GenreResponse>
 
-    @GET("movie/upcoming")
+    @GET("discover/movie")
     fun upcomingMovies(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
