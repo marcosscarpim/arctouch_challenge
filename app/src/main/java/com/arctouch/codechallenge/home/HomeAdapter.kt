@@ -11,7 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class HomeAdapter(private val movies: List<Movie>) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(
+        val onItemClicked: (id: Int) -> Unit
+) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+
+    private val movies = mutableListOf<Movie>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -29,6 +33,17 @@ class HomeAdapter(private val movies: List<Movie>) : RecyclerView.Adapter<HomeAd
         }
     }
 
+    /**
+     * Add more movies to recycler view.
+     *
+     * @param movieList the list of [Movie]
+     */
+    fun addMovieList(movieList: List<Movie>) {
+        val currentSize = movies.size
+        movies.addAll(movieList)
+        notifyItemRangeInserted(currentSize, movieList.size)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return ViewHolder(view)
@@ -36,5 +51,9 @@ class HomeAdapter(private val movies: List<Movie>) : RecyclerView.Adapter<HomeAd
 
     override fun getItemCount() = movies.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(movies[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val movie = movies[position]
+        holder.bind(movie)
+        holder.itemView.setOnClickListener { onItemClicked(movie.id) }
+    }
 }
