@@ -3,19 +3,19 @@ package com.arctouch.codechallenge.details
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.api.TmdbRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * View Model to provide movie details information.
  *
- * @param api the [TmdbApi]
- * @param movieId the id of the movie to request information
+ * @param repository the [TmdbRepository]
+ * @param mapper maps the relationship between [Movie] and [DetailsEntry]
  */
-class DetailsViewModel(private val repository: TmdbRepository): ViewModel() {
+class DetailsViewModel(
+        private val repository: TmdbRepository,
+        private val mapper: DetailsEntryMapper
+): ViewModel() {
 
     private val entry: MutableLiveData<DetailsEntry> by lazy {
         MutableLiveData<DetailsEntry>().also {
@@ -41,7 +41,7 @@ class DetailsViewModel(private val repository: TmdbRepository): ViewModel() {
 
     private fun loadDetails() {
         disposable = repository.getMovieDetails(movieId)
-                .subscribe { entry.value = DetailsEntryMapper().toEntry(it) }
+                .subscribe { entry.value = mapper.toEntry(it) }
     }
 
     /**

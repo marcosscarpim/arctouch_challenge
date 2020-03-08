@@ -3,18 +3,19 @@ package com.arctouch.codechallenge.home
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.base.BaseActivity
 import com.arctouch.codechallenge.details.DetailsActivity
 import com.arctouch.codechallenge.model.Movie
 import kotlinx.android.synthetic.main.home_activity.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModel()
 
     private var adapter: HomeAdapter = HomeAdapter { openDetails(it) }
 
@@ -26,8 +27,6 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
-        // TODO improve view model call to follow Android guidelines
-        viewModel = HomeViewModel(repository)
         viewModel.getEntriesObservable().observe(this, pageObserver)
 
         recyclerView.adapter = adapter

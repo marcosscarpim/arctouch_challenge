@@ -1,21 +1,16 @@
 package com.arctouch.codechallenge.home
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
-import com.arctouch.codechallenge.api.TmdbApi
+import android.arch.lifecycle.ViewModel
 import com.arctouch.codechallenge.api.TmdbRepository
 import com.arctouch.codechallenge.data.Cache
 import com.arctouch.codechallenge.model.Movie
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * View Model to provide movies pagination.
  */
-class HomeViewModel(private val repository: TmdbRepository) {
+class HomeViewModel(private val repository: TmdbRepository): ViewModel() {
 
     private val entries: MutableLiveData<List<Movie>> by lazy {
         MutableLiveData<List<Movie>>().also {

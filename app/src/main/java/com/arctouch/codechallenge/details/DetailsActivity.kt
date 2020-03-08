@@ -3,21 +3,22 @@ package com.arctouch.codechallenge.details
 import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.base.BaseActivity
 import com.arctouch.codechallenge.databinding.DetailsActivityBinding
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import com.bumptech.glide.Glide
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * Activity to display detailed movies' information.
  */
-class DetailsActivity : BaseActivity() {
+class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: DetailsActivityBinding
 
-    private lateinit var viewModel: DetailsViewModel
+    private val viewModel: DetailsViewModel by viewModel()
 
     private val detailsObserver: Observer<DetailsEntry> = Observer {
         updateUI(it)
@@ -29,8 +30,6 @@ class DetailsActivity : BaseActivity() {
 
         val movieId = intent.getLongExtra(MOVIE_ID_EXTRA_NAME, 0)
 
-        // TODO improve view model call to follow Android guidelines
-        viewModel = DetailsViewModel(repository)
         viewModel.getDetails(movieId).observe(this, detailsObserver)
     }
 

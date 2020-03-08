@@ -1,9 +1,7 @@
 package com.arctouch.codechallenge.api
 
 import com.arctouch.codechallenge.model.Genre
-import com.arctouch.codechallenge.model.GenreResponse
 import com.arctouch.codechallenge.model.Movie
-import com.arctouch.codechallenge.model.UpcomingMoviesResponse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
