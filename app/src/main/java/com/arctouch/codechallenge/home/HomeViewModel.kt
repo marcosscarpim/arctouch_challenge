@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 import com.arctouch.codechallenge.api.TmdbApi
+import com.arctouch.codechallenge.api.TmdbRepository
 import com.arctouch.codechallenge.data.Cache
 import com.arctouch.codechallenge.model.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * View Model to provide movies pagination.
  */
-class HomeViewModel(private val api: TmdbApi) {
+class HomeViewModel(private val repository: TmdbRepository) {
 
     private val entries: MutableLiveData<List<Movie>> by lazy {
         MutableLiveData<List<Movie>>().also {
@@ -52,11 +53,9 @@ class HomeViewModel(private val api: TmdbApi) {
     }
 
     private fun getPage(page: Long) =
-        api.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, page, TmdbApi.DEFAULT_REGION)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        repository.getUpcomingMovies(page)
             .subscribe {
-                val moviesWithGenres = it.results.map { movie ->
+                val moviesWithGenres = it.map { movie ->
                     movie.copy(genres = Cache.genres.filter { movie.genreIds?.contains(it.id) == true })
                 }
                 entries.value = moviesWithGenres

@@ -3,15 +3,12 @@ package com.arctouch.codechallenge.details
 import android.arch.lifecycle.Observer
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.base.BaseActivity
 import com.arctouch.codechallenge.databinding.DetailsActivityBinding
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.RequestOptions.bitmapTransform
 
 /**
  * Activity to display detailed movies' information.
@@ -33,7 +30,7 @@ class DetailsActivity : BaseActivity() {
         val movieId = intent.getLongExtra(MOVIE_ID_EXTRA_NAME, 0)
 
         // TODO improve view model call to follow Android guidelines
-        viewModel = DetailsViewModel(api)
+        viewModel = DetailsViewModel(repository)
         viewModel.getDetails(movieId).observe(this, detailsObserver)
     }
 

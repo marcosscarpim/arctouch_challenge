@@ -4,13 +4,11 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.base.BaseActivity
 import com.arctouch.codechallenge.details.DetailsActivity
 import com.arctouch.codechallenge.model.Movie
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.home_activity.*
 
 
@@ -29,7 +27,7 @@ class HomeActivity : BaseActivity() {
         setContentView(R.layout.home_activity)
 
         // TODO improve view model call to follow Android guidelines
-        viewModel = HomeViewModel(api)
+        viewModel = HomeViewModel(repository)
         viewModel.getEntriesObservable().observe(this, pageObserver)
 
         recyclerView.adapter = adapter
