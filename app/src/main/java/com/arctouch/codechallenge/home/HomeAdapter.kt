@@ -15,7 +15,7 @@ class HomeAdapter(
         val onItemClicked: (id: Int) -> Unit
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    val movies = mutableListOf<Movie>()
+    private val movies = mutableListOf<Movie>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,6 +33,11 @@ class HomeAdapter(
         }
     }
 
+    /**
+     * Add more movies to recycler view.
+     *
+     * @param movieList the list of [Movie]
+     */
     fun addMovieList(movieList: List<Movie>) {
         val currentSize = movies.size
         movies.addAll(movieList)

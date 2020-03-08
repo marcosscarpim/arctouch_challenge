@@ -16,8 +16,6 @@ import kotlinx.android.synthetic.main.home_activity.*
 
 class HomeActivity : BaseActivity() {
 
-    private var dispatcher: Disposable? = null
-
     private lateinit var viewModel: HomeViewModel
 
     private var adapter: HomeAdapter = HomeAdapter { openDetails(it) }
@@ -30,6 +28,7 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
+        // TODO improve view model call to follow Android guidelines
         viewModel = HomeViewModel(api)
         viewModel.getEntriesObservable().observe(this, pageObserver)
 
@@ -43,6 +42,7 @@ class HomeActivity : BaseActivity() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
                     viewModel.getNextPage()
+                    progressBar.visibility = View.VISIBLE
                 }
             }
         })
@@ -55,7 +55,7 @@ class HomeActivity : BaseActivity() {
 
     private fun openDetails(movieId: Int) {
         val intent = Intent(this, DetailsActivity::class.java).apply {
-            putExtra(DetailsActivity.MOVIE_ID_EXTRA_NAME, movieId)
+            putExtra(DetailsActivity.MOVIE_ID_EXTRA_NAME, movieId.toLong())
         }
         startActivity(intent)
     }

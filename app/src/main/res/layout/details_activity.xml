@@ -89,8 +89,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/overview"
-                android:alpha="1.0"
+                app:layout_constraintTop_toTopOf="parent"
+                android:alpha="0.3"
                 tools:src="@drawable/ic_launcher_foreground"/>
         </android.support.constraint.ConstraintLayout>
 

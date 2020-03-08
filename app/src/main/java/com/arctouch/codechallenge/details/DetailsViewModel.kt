@@ -13,13 +13,8 @@ import io.reactivex.schedulers.Schedulers
  *
  * @param api the [TmdbApi]
  * @param movieId the id of the movie to request information
- * @param mapper maps the relationship between [Movie] and [DetailsEntry]
  */
-class DetailsViewModel(
-        private val api: TmdbApi,
-        private val movieId: Long,
-        private val mapper: DetailsEntryMapper
-): ViewModel() {
+class DetailsViewModel(private val api: TmdbApi): ViewModel() {
 
     private val entry: MutableLiveData<DetailsEntry> by lazy {
         MutableLiveData<DetailsEntry>().also {
@@ -29,20 +24,30 @@ class DetailsViewModel(
 
     private var disposable: Disposable? = null
 
+    private var movieId: Long = -1
+
     /**
      * Starts API to acquire movie detailed information.
      *
+     * @param id the movie id to load
+     *
      * @return a [LiveData] with [DetailsEntry]
      */
-    fun getDetails(): LiveData<DetailsEntry> = entry
+    fun getDetails(id: Long): LiveData<DetailsEntry> {
+        movieId = id
+        return entry
+    }
 
     private fun loadDetails() {
         disposable = api.movie(movieId, TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { entry.value = mapper.toEntry(it) }
+                .subscribe { entry.value = DetailsEntryMapper().toEntry(it) }
     }
 
+    /**
+     * Dispose the subscriptions to API to avoid leaks.
+     */
     fun dispose() {
         disposable?.dispose()
     }
